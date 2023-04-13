@@ -133,12 +133,8 @@ if ENVIRONMENT == ENVIRONMENT_TYPE_PRODUCTION:
             url=WEBHOOK_URL,
         )
     )
-    loop.run_until_complete(
-        bot_application.initialize()
-    )
-    loop.run_until_complete(
-         bot_application.start()
-    )
+    loop.run_until_complete(bot_application.initialize())
+    loop.run_until_complete(bot_application.start())
 
 
 @application.route("/", methods=["GET", "POST"])
@@ -152,10 +148,28 @@ def index():
         except Exception as e:
             print(traceback.format_exc())
 
-        print(">>>>", response)
-        return 'OK'
+        return "OK"
 
-    return "Hello there"
+    return """
+        <!DOCTYPE html>
+        <html lang="uk">
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Бот для створення стікерів</title>
+        </head>
+        <body>
+            <h1>Бот для створення стікерів</h1>
+            <p>
+                Телеграм Бот для створення стікерів з вирізок
+                <a href="https://segment-anything.com/demo#">Segment Anything від Meta AI</a>.
+            </p>
+            <br/>
+            <a href="https://t.me/sticker_from_cutout_bot">@sticker_from_cutout_bot</a>
+        </body>
+        </html>
+        """
 
 
 def main():
