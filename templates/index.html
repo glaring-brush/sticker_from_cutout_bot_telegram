@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бот для створення стікерів</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <style>
+        body {
+            margin-top: 4em;
+        }
+
+        .support-ukraine,
+        .support-ukraine:visited {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            background: rgb(0, 0, 0);
+            display: flex;
+            justify-content: center;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            z-index: 10000;
+            text-decoration: none;
+            font-family: arial;
+        }
+
+        .support-ukraine:hover,
+        .support-ukraine:active {
+            background: black;
+            display: flex;
+            background: rgb(80, 80, 80);
+            text-decoration: none;
+        }
+
+        .support-ukraine__flag {
+            height: 25px;
+            margin-right: 10px;
+        }
+
+        .support-ukraine__flag__blue {
+            width: 40px;
+            height: 12.5px;
+            background: #005BBB;
+        }
+
+        .support-ukraine__flag__yellow {
+            width: 40px;
+            height: 12.5px;
+            background: #FFD500;
+        }
+
+        .support-ukraine__label {
+            color: white;
+            font-size: 12px;
+            line-height: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <a class="support-ukraine" href="https://help.unicef.org/ukraine-emergency" target="_blank" rel="nofollow noopener"
+        title="Donate to support Ukraine's independence.">
+        <div class="support-ukraine__flag" role="img" aria-label="Flag of Ukraine">
+            <div class="support-ukraine__flag__blue"></div>
+            <div class="support-ukraine__flag__yellow"></div>
+        </div>
+        <div class="support-ukraine__label">
+            Donate to support Ukraine's independence.
+        </div>
+    </a>
+    <h1>Бот для створення стікерів</h1>
+    <p>
+        Телеграм Бот для створення стікерів з вирізок
+        <a href="https://segment-anything.com/demo#">Segment Anything від Meta AI</a>.
+    </p>
+    <p>
+        Доступний за посиланням:
+        <a href="https://t.me/sticker_from_cutout_bot">@sticker_from_cutout_bot</a>
+    </p>
+</body>
+
+</html>

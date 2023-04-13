@@ -4,7 +4,7 @@ import sys
 import traceback
 import asyncio
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import (
@@ -150,26 +150,7 @@ def index():
 
         return "OK"
 
-    return """
-        <!DOCTYPE html>
-        <html lang="uk">
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Бот для створення стікерів</title>
-        </head>
-        <body>
-            <h1>Бот для створення стікерів</h1>
-            <p>
-                Телеграм Бот для створення стікерів з вирізок
-                <a href="https://segment-anything.com/demo#">Segment Anything від Meta AI</a>.
-            </p>
-            <br/>
-            <a href="https://t.me/sticker_from_cutout_bot">@sticker_from_cutout_bot</a>
-        </body>
-        </html>
-        """
+    return render_template("index.html")
 
 
 def main():
