@@ -1,9 +1,31 @@
 from io import BytesIO
 import requests
-from PIL import Image
+from PIL import Image, ImageOps, ImageFilter, ImageDraw
 
-MAX_CANVAS_SIDE_SIZE_PX = 512
+MAX_CANVAS_SIDE_SIZE_PX = 480
+CANVAS_PADDING = 16
+OUTLINE_WIDTH = 12
+OUTLINE_COLOR = "white"
 
+def add_outline_for_image(image):
+    edge = image.filter(ImageFilter.FIND_EDGES)
+    edge = edge.convert("L")
+    edge_data = edge.load()
+
+    stroke = Image.new(image.mode, image.size, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(stroke)
+    edge_width, edge_height = edge.size
+
+    for y in range(edge_height):
+        for x in range(edge_width):
+            if edge_data[x, y]:
+                draw.ellipse(
+                    (int(x - OUTLINE_WIDTH), int(y - OUTLINE_WIDTH), int(x + OUTLINE_WIDTH), int(y + OUTLINE_WIDTH)),
+                    fill=OUTLINE_COLOR,
+                )
+
+    result_image = Image.alpha_composite(stroke, image)
+    return result_image
 
 def download_image_and_convert_to_webp(image_url, headers={}) -> BytesIO:
     response = requests.get(image_url, headers=headers)
@@ -23,11 +45,15 @@ def download_image_and_convert_to_webp(image_url, headers={}) -> BytesIO:
         scale_factor = image_height / MAX_CANVAS_SIDE_SIZE_PX
 
     resized_width, resized_height = (
-        int(image_width * scale_factor),
-        int(image_height * scale_factor),
+        int(image_width / scale_factor),
+        int(image_height / scale_factor),
     )
 
-    image.resize((resized_width, resized_height))
+    image = image.resize((resized_width, resized_height))
+
+    image = ImageOps.expand(image, border=(CANVAS_PADDING, CANVAS_PADDING, CANVAS_PADDING, CANVAS_PADDING))
+
+    image = add_outline_for_image(image)    
 
     in_memory_file = BytesIO()
     image.save(in_memory_file, format="webp")
