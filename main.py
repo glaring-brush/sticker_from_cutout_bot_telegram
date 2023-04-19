@@ -6,13 +6,14 @@ import asyncio
 
 from flask import Flask, request, render_template
 from dotenv import load_dotenv
-from telegram import Update
+from telegram import Update, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
+
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
     ContextTypes,
     MessageHandler,
-    filters,
+    filters, CallbackContext, Updater, CallbackQueryHandler,
 )
 
 from utils import download_image_and_convert_to_webp
@@ -23,20 +24,25 @@ logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 TOKEN = os.getenv("TOKEN")
-WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+# WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 ENVIRONMENT = os.getenv("ENVIRONMENT")
 
 ENVIRONMENT_TYPE_DEVELOPMENT = "development"
 ENVIRONMENT_TYPE_PRODUCTION = "production"
 
 
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    greeting = (
-        """🇺🇦 Слава Україні 🇺🇦, козаче (берегине)! \n"""
-        """Надішли, будь ласка, мені світлину в форматі PNG, "як файл". \n"""
-        """Ти можеш скористатись Segment Anything для вирізання об'єктів на фото: https://segment-anything.com/demo"""
-    )
-    await update.message.reply_text(text=greeting)
+    greeting = ("""🇺🇦 Слава Україні 🇺🇦, козаче (берегине)! \n"""
+    """Надішли, будь ласка, мені світлину в форматі PNG, "як файл". \n"""
+    """Ти можеш скористатись Segment Anything для вирізання об'єктів на фото""")
+
+    button = [
+        [InlineKeyboardButton(text="Вирізати об'єкт", url="https://segment-anything.com/demo")],
+    ]
+    reply_keyboard = InlineKeyboardMarkup(button)
+
+    await update.message.reply_text(text=greeting, reply_markup=reply_keyboard)
 
 
 async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE):
