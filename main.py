@@ -126,7 +126,6 @@ application = Flask(__name__)
 if ENVIRONMENT == ENVIRONMENT_TYPE_PRODUCTION:
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    asyncio.run
     logger.info("Set webhook")
     loop.run_until_complete(
         bot_application.bot.set_webhook(
