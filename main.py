@@ -3,7 +3,6 @@ import os
 import sys
 import traceback
 import asyncio
-import uuid
 
 from flask import Flask, request, render_template
 from dotenv import load_dotenv
@@ -25,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 TOKEN = os.getenv("TOKEN")
 WEBHOOK_BASE_URL = os.getenv("WEBHOOK_BASE_URL", "")
-WEBHOOK_PATH = f"/webhook/{uuid.uuid4()}"
+WEBHOOK_PATH = f"/webhook"
 WEBHOOK_URL = WEBHOOK_BASE_URL + WEBHOOK_PATH
 ENVIRONMENT = os.getenv("ENVIRONMENT")
 
