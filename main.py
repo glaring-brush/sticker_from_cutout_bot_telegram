@@ -7,7 +7,7 @@ import uuid
 
 from flask import Flask, request, render_template
 from dotenv import load_dotenv
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
@@ -39,7 +39,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Надішли, будь ласка, мені світлину в форматі PNG, "як файл". \n"""
         """Ти можеш скористатись Segment Anything для вирізання об'єктів на фото: https://segment-anything.com/demo"""
     )
-    await update.message.reply_text(text=greeting)
+
+    button = [
+        [InlineKeyboardButton(text="Вирізати об'єкт", url="https://segment-anything.com/demo")],
+    ]
+    reply_keyboard = InlineKeyboardMarkup(button)
+
+    await update.message.reply_text(text=greeting, reply_markup=reply_keyboard)
 
 
 async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE):
