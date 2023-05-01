@@ -3,6 +3,7 @@ import os
 import sys
 import traceback
 import asyncio
+import uuid
 
 from flask import Flask, request, render_template
 from dotenv import load_dotenv
@@ -23,7 +24,9 @@ logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 TOKEN = os.getenv("TOKEN")
-WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+WEBHOOK_BASE_URL = os.getenv("WEBHOOK_BASE_URL", "")
+WEBHOOK_PATH = f"/webhook/{uuid.uuid4()}"
+WEBHOOK_URL = WEBHOOK_BASE_URL + WEBHOOK_PATH
 ENVIRONMENT = os.getenv("ENVIRONMENT")
 
 ENVIRONMENT_TYPE_DEVELOPMENT = "development"
@@ -126,7 +129,7 @@ application = Flask(__name__)
 if ENVIRONMENT == ENVIRONMENT_TYPE_PRODUCTION:
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    logger.info("Set webhook")
+    logger.info(f"Set webhook base to {WEBHOOK_URL}")
     loop.run_until_complete(
         bot_application.bot.set_webhook(
             url=WEBHOOK_URL,
@@ -136,8 +139,13 @@ if ENVIRONMENT == ENVIRONMENT_TYPE_PRODUCTION:
     loop.run_until_complete(bot_application.start())
 
 
-@application.route("/", methods=["GET", "POST"])
+@application.route("/")
 def index():
+    return render_template("index.html")
+
+
+@application.route(WEBHOOK_PATH, methods=["POST"])
+def webhook():
     if request.method == "POST":
         update = Update.de_json(request.get_json(force=True), bot_application.bot)
         response = None
@@ -147,9 +155,7 @@ def index():
         except Exception as e:
             print(traceback.format_exc())
 
-        return "OK"
-
-    return render_template("index.html")
+    return "OK"
 
 
 def main():
