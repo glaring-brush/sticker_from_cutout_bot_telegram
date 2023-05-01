@@ -24,7 +24,7 @@ logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 TOKEN = os.getenv("TOKEN")
-# WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 ENVIRONMENT = os.getenv("ENVIRONMENT")
 
 ENVIRONMENT_TYPE_DEVELOPMENT = "development"
