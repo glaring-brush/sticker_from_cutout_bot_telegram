@@ -1,19 +1,18 @@
 import logging
 import os
-import sys
 import traceback
 import asyncio
 
 from flask import Flask, request, render_template
 from dotenv import load_dotenv
-from telegram import Update, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
     ContextTypes,
     MessageHandler,
-    filters, CallbackContext, Updater, CallbackQueryHandler,
+    filters,
 )
 
 from utils import download_image_and_convert_to_webp
