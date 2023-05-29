@@ -1,13 +1,13 @@
 import logging
 import os
-import sys
 import traceback
 import asyncio
 import uuid
 
 from flask import Flask, request, render_template
 from dotenv import load_dotenv
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
@@ -33,13 +33,18 @@ ENVIRONMENT_TYPE_DEVELOPMENT = "development"
 ENVIRONMENT_TYPE_PRODUCTION = "production"
 
 
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    greeting = (
-        """🇺🇦 Слава Україні 🇺🇦, козаче (берегине)! \n"""
-        """Надішли, будь ласка, мені світлину в форматі PNG, "як файл". \n"""
-        """Ти можеш скористатись Segment Anything для вирізання об'єктів на фото: https://segment-anything.com/demo"""
-    )
-    await update.message.reply_text(text=greeting)
+    greeting = ("""🇺🇦 Слава Україні 🇺🇦, козаче (берегине)! \n"""
+    """Надішли, будь ласка, мені світлину в форматі PNG, "як файл". \n"""
+    """Ти можеш скористатись Segment Anything для вирізання об'єктів на фото""")
+
+    button = [
+        [InlineKeyboardButton(text="Вирізати об'єкт", url="https://segment-anything.com/demo")],
+    ]
+    reply_keyboard = InlineKeyboardMarkup(button)
+
+    await update.message.reply_text(text=greeting, reply_markup=reply_keyboard)
 
 
 async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE):
